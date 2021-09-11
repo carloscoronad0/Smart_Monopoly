@@ -332,6 +332,8 @@ namespace Monopoly.RLHandlers
             lastState = new Observation();
 
             traces = new List<EligibilityTrace>();
+
+            Console.WriteLine("Prove of everythin ok: {0} : {1} : {2} : {3}", agentType, currentEpoch, epsilon, money);
         }
 
         //Change agent's current observation based on what the agent receives

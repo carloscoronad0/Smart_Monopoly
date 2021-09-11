@@ -248,6 +248,11 @@ namespace Monopoly.RLHandlers
             return info;
         }
 
+        private bool verify_Agent_Existence(string path_to_agent)
+        {
+            return File.Exists(path_to_agent);
+        }
+
 
         #region CreateObservation
 
@@ -1124,19 +1129,29 @@ namespace Monopoly.RLHandlers
             //Initialize agents. We'll use the same for all games during this run
             for (int i = 0; i < currentPlayers; i++)
             {
-                gamePlayers.Add(new RLAgent());
-                System.Threading.Thread.Sleep(100);
-            
-                this.gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23)); //agent type(random-qlearning, policyFrozen, name, input vector length
+                string path = "agents/Agent" + i + ".dat";
+
+                if (verify_Agent_Existence(path))
+                {
+                    Console.WriteLine("Agent found");
+                    gamePlayers.Add(loadAgent(path));
+                    Console.WriteLine("Some elements: {0}, {1}", gamePlayers[i].name, gamePlayers[i].money);
+                }
+                else
+                {
+                    Console.WriteLine("Agent not found");
+                    gamePlayers.Add(new RLAgent());
+                    gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23)); //agent type(random-qlearning, policyFrozen, name, input vector length
+                }
 
                 averageMoney[i] = 0;
+                
             }
-
             //Initialize stopwatch
             timer = new Stopwatch();
 
             //Set total games
-            totalGames = 10;
+            totalGames = 2;
 
             //Start the games
             for (currentGame = 0; currentGame < totalGames; currentGame++)
@@ -1153,12 +1168,11 @@ namespace Monopoly.RLHandlers
                 stepCounter = 0;
 
                 //Start and play the game
+                Console.WriteLine("Actual game: {0} ; Money: {1}", currentGame, gamePlayers[0].money);
                 env_start();
 
-                Console.WriteLine("Actual game: " + currentGame);
-
-                if ((currentGame % 5).Equals(0) && (!gamePlayers[0].getType().Equals('r')))
-                    gamePlayers[0].saveOnFile("agents/nn" + currentGame.ToString() + "games.dat");
+                //if ((currentGame % 5).Equals(0) && (!gamePlayers[0].getType().Equals('r')))
+                    //gamePlayers[0].saveOnFile("agents/nn" + currentGame.ToString() + "games.dat");
 
                 Console.WriteLine("Game {0} completed", currentGame);
 
@@ -1503,7 +1517,7 @@ namespace Monopoly.RLHandlers
 //                                  for (int actCount = 0; actCount < MAXAGENTACTIONS; actCount++)
 //                                  {
                                     action = gamePlayers[currentPlayer].agent_step(obs, calculateReward(currentPlayer));
-                                    Console.WriteLine("Player: {0} Action: {1}", currentPlayer, action);
+                                    //Console.WriteLine("Player: {0} Action: {1}", currentPlayer, action);
                               
                                     if (currentPlayer.Equals(0))
                                         Awriter.WriteLine(action.ToString() + " -- " + group.ToString()); 
@@ -1706,7 +1720,6 @@ namespace Monopoly.RLHandlers
             winner.Close();
 
         }
-
 
         #endregion Environment
 
