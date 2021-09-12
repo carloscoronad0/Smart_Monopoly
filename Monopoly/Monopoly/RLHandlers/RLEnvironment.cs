@@ -17,7 +17,7 @@ namespace Monopoly.RLHandlers
 {
     public class RLEnvironment
     {
-        public TextWriter Awriter = new StreamWriter("actions.txt");
+        public TextWriter Awriter;
 
         //Handler for the helper methods of the project
         private MonopolyHandlers.InitMethods initMethods = new MonopolyHandlers.InitMethods();
@@ -41,9 +41,6 @@ namespace Monopoly.RLHandlers
 
         //Stopwatch timer to calculate duration of game
         Stopwatch timer;
-
-        //Create stream writer for the output file
-        TextWriter textWriter;
 
         //Int value specifying the current value
         int currentGame;
@@ -248,9 +245,16 @@ namespace Monopoly.RLHandlers
             return info;
         }
 
-        private bool verify_Agent_Existence(string path_to_agent)
+        private bool verifyFileExistence(string pathToFile)
         {
-            return File.Exists(path_to_agent);
+            return File.Exists(pathToFile);
+        }
+
+        private void addOnTextFile(string pathToFile, string information)
+        {
+            TextWriter tw = new StreamWriter(pathToFile, true);
+            tw.Write(information);
+            tw.Close();
         }
 
 
@@ -1119,6 +1123,10 @@ namespace Monopoly.RLHandlers
         //Initialize environment's parameters
         public void env_init()
         {
+            // Setting up everything ----------------------------------------------------------------------------------------------
+            // --------------------------------------------------------------------------------------------------------------------
+            Awriter = new StreamWriter("actions.txt", true);
+
             //Create new list of agents
             gamePlayers = new List<Player>();
             currentPlayers = 3;
@@ -1126,18 +1134,22 @@ namespace Monopoly.RLHandlers
             //Average money of every player during the game
             averageMoney = new int[currentPlayers];
 
-            //Initialize agents. We'll use the same for all games during this run
+            // Initialize agents -------------------------------------------------------------------------------------------------
+            // -------------------------------------------------------------------------------------------------------------------
+
+            // We'll use the same for all games during this run
             for (int i = 0; i < currentPlayers; i++)
             {
                 string path = "agents/Agent" + i + ".dat";
 
-                if (verify_Agent_Existence(path))
+                // If there was a saved agent, there's no need to create a new one
+                if (verifyFileExistence(path))
                 {
                     Console.WriteLine("Agent found");
                     gamePlayers.Add(loadAgent(path));
                     Console.WriteLine("Some elements: {0}, {1}", gamePlayers[i].name, gamePlayers[i].money);
                 }
-                else
+                else // Else create it
                 {
                     Console.WriteLine("Agent not found");
                     gamePlayers.Add(new RLAgent());
@@ -1145,13 +1157,13 @@ namespace Monopoly.RLHandlers
                 }
 
                 averageMoney[i] = 0;
-                
             }
+
             //Initialize stopwatch
             timer = new Stopwatch();
 
             //Set total games
-            totalGames = 2;
+            totalGames = 3;
 
             //Start the games
             for (currentGame = 0; currentGame < totalGames; currentGame++)
@@ -1168,26 +1180,23 @@ namespace Monopoly.RLHandlers
                 stepCounter = 0;
 
                 //Start and play the game
-                Console.WriteLine("Actual game: {0} ; Money: {1}", currentGame, gamePlayers[0].money);
+                Console.WriteLine("Actual game: {0}", currentGame);
                 env_start();
 
                 //if ((currentGame % 5).Equals(0) && (!gamePlayers[0].getType().Equals('r')))
-                    //gamePlayers[0].saveOnFile("agents/nn" + currentGame.ToString() + "games.dat");
+                //gamePlayers[0].saveOnFile("agents/nn" + currentGame.ToString() + "games.dat");
 
                 Console.WriteLine("Game {0} completed", currentGame);
-
             }
+
+            // Close actions writter
+            Awriter.Close();
 
             //Print experiment's info
             printInfo();
 
-            //Close the writer
-            textWriter.Close();
-
             //Cleanup agents
             env_cleanup();
-
-            Awriter.Close();
         }
 
         //Start playing the game
@@ -1317,7 +1326,7 @@ namespace Monopoly.RLHandlers
         public void env_cleanup()
         {
             //Print average money of every player
-            TextWriter averageMoneyWriter = new StreamWriter("txt/AverageMoney.txt");
+            TextWriter averageMoneyWriter = new StreamWriter("txt/AverageMoney.txt", true);
 
             for (int i = 0; i < currentPlayers; i++)
                 averageMoneyWriter.WriteLine((averageMoney[i] / totalGames).ToString());
@@ -1327,7 +1336,7 @@ namespace Monopoly.RLHandlers
             //Dispose agents and save neural networks
             for (int i = 0; i < currentPlayers; i++)
             {
-                gamePlayers[i].saveOnFile("agents/nnFinalNeural--"+i.ToString()+".dat");
+                //gamePlayers[i].saveOnFile("agents/nnFinalNeural--"+i.ToString()+".dat");
                 gamePlayers[i].agent_cleanup();
             }
 
@@ -1702,23 +1711,25 @@ namespace Monopoly.RLHandlers
             if (!Directory.Exists("txt/"))
                 Directory.CreateDirectory("txt/");
 
-            //Create stream writer for the output file
-            textWriter = new StreamWriter("txt/output.txt");
-            TextWriter winner = new StreamWriter("txt/winners.txt");
-            TextWriter move = new StreamWriter("txt/moves.txt");
-         
+            string output = "";
+            string winner = "";
+            string move = "";
+
+            /*
             textWriter.WriteLine("=========== RL AGENTS =============");
             textWriter.WriteLine("Game----Time-----Winnner-----Moves-");
+            */
+
             for (int i = 0; i < winners.Count; i++)
             {
-                textWriter.WriteLine((i + 1).ToString() + "        " + (times[i]/1000).ToString() + "        " + winners[i] + "     " + moves[i].ToString());
-                winner.WriteLine(winners[i].ToString());
-                move.WriteLine(moves[i].ToString());
+                output += (i + 1).ToString() + "        " + (times[i] / 1000).ToString() + "        " + winners[i] + "     " + moves[i].ToString() + Environment.NewLine;
+                winner += winners[i].ToString() + Environment.NewLine;
+                move += moves[i].ToString() + Environment.NewLine;
             }
 
-            move.Close();
-            winner.Close();
-
+            addOnTextFile("txt/output.txt", output);
+            addOnTextFile("txt/winners.txt", winner);
+            addOnTextFile("txt/moves.txt", move);
         }
 
         #endregion Environment

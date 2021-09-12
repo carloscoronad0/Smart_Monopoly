@@ -219,7 +219,7 @@ namespace Monopoly.RLHandlers
                 if (!Directory.Exists("agents/"))
                     Directory.CreateDirectory("agents/");
 
-                FileStream fs = new FileStream("agents/" + this.name + ".dat", FileMode.Create);
+                FileStream fs = new FileStream("agents/" + this.name + ".dat", FileMode.OpenOrCreate);
                 BinaryFormatter formatter = new BinaryFormatter();
                 formatter.Serialize(fs, this);
                 fs.Close();
@@ -229,7 +229,7 @@ namespace Monopoly.RLHandlers
         //Save network  on file
         public override void saveOnFile(string path)
         {
-            FileStream fs = new FileStream(path, FileMode.Create);
+            FileStream fs = new FileStream(path, FileMode.OpenOrCreate);
             BinaryFormatter formatter = new BinaryFormatter();
             formatter.Serialize(fs, this.network);
             fs.Close();
