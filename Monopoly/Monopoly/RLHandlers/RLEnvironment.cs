@@ -118,7 +118,7 @@ namespace Monopoly.RLHandlers
         public const int MAXHOUSES = 25;
         public const int MAXHOTELS = 10;
         public const int MAXAGENTACTIONS = 3;
-        public const int MAXSTEPS = 2000;
+        public const int MAXSTEPS = 400;
         public const int REWARD = 0;
         public const int WINREWARD = 10;
         public const int DEFEATREWARD = -10;
@@ -1163,7 +1163,7 @@ namespace Monopoly.RLHandlers
             timer = new Stopwatch();
 
             //Set total games
-            totalGames = 3;
+            totalGames = 1;
 
             //Start the games
             for (currentGame = 0; currentGame < totalGames; currentGame++)
