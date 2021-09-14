@@ -260,6 +260,25 @@ namespace Monopoly.RLHandlers
             tw.Close();
         }
 
+        private string readFromTextFile(string pathToFile)
+        {
+            TextReader tr = new StreamReader(pathToFile);
+            string temp = tr.ReadToEnd();
+            tr.Close();
+
+            return temp;
+        }
+
+        private void saveGamesPlayed(List<int> information)
+        {
+            for(int i = 0; i < information.Count; i++)
+            {
+                TextWriter tw = new StreamWriter("gamesPlayed/Agent" + i + "Games.txt", false);
+                tw.Write(information);
+                tw.Close();
+            }
+        }
+
 
         #region CreateObservation
 
@@ -1142,6 +1161,8 @@ namespace Monopoly.RLHandlers
             //Times a property is bought by each player
             allRewards = new int[currentPlayers];
 
+            List<int> AgentsGamesPlayed = new List<int>();
+
             // Initialize agents -------------------------------------------------------------------------------------------------
             // -------------------------------------------------------------------------------------------------------------------
 
@@ -1149,6 +1170,7 @@ namespace Monopoly.RLHandlers
             for (int i = 0; i < currentPlayers; i++)
             {
                 string path = "agents/Agent" + i + ".dat";
+                string agentGamesPlayedPath = "gamesPlayed/Agent" + i + "Games.txt";
 
                 // If there was a saved agent, there's no need to create a new one
                 if (verifyFileExistence(path))
@@ -1156,12 +1178,14 @@ namespace Monopoly.RLHandlers
                     Console.WriteLine("Agent found");
                     gamePlayers.Add(loadAgent(path));
                     Console.WriteLine("Some elements: {0}, {1}", gamePlayers[i].name, gamePlayers[i].money);
+                    AgentsGamesPlayed.Add(Int32.Parse(readFromTextFile(agentGamesPlayedPath)));
                 }
                 else // Else create it
                 {
                     Console.WriteLine("Agent not found");
                     gamePlayers.Add(new RLAgent());
                     gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23)); //agent type(random-qlearning, policyFrozen, name, input vector length
+                    AgentsGamesPlayed.Add(0);
                 }
 
                 averageMoney[i] = 0;
@@ -1190,13 +1214,21 @@ namespace Monopoly.RLHandlers
 
                 //Start and play the game
                 Console.WriteLine("Actual game: {0}", currentGame);
+
                 env_start();
 
-                //if ((currentGame % 5).Equals(0) && (!gamePlayers[0].getType().Equals('r')))
-                //gamePlayers[0].saveOnFile("agents/nn" + currentGame.ToString() + "games.dat");
+                if ((currentGame % 5).Equals(0))
+                {
+                    gamePlayers[2].saveOnFile("nnAgent2/nn" + AgentsGamesPlayed[2] + "games.dat");
+                    gamePlayers[3].saveOnFile("nnAgent3/nn" + AgentsGamesPlayed[3] + "games.dat");
+                }
+
+                for (int i = 0; i < currentPlayers; i++) AgentsGamesPlayed[i] += 1;
 
                 Console.WriteLine("Game {0} completed", currentGame);
             }
+
+            saveGamesPlayed(AgentsGamesPlayed);
 
             // Close actions writter
             Awriter.Close();

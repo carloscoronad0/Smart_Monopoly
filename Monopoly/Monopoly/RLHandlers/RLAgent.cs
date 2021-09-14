@@ -52,7 +52,6 @@ namespace Monopoly.RLHandlers
 
         #region RLMethods
 
-
         //Initialize agent's parameters
         public override void agent_init(char type, bool policy, string agentName, int inputCount)
         {
