@@ -1309,8 +1309,12 @@ namespace Monopoly.RLHandlers
                     gamePlayers[3].saveOnFile("nnAgent3/nn" + AgentsGamesPlayed[3] + "games.dat");
                 }
 
-                for (int i = 0; i < currentPlayers; i++) AgentsGamesPlayed[i] += 1;
-
+                for (int i = 0; i < currentPlayers; i++)
+                {
+                    AgentsGamesPlayed[i] += 1;
+                    allRewards[i] = 0;
+                }
+                
                 Console.WriteLine("Game {0} completed", currentGame);
             }
 
