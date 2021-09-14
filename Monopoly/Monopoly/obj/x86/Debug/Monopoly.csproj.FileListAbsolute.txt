@@ -275,3 +275,19 @@ E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CoreCompileInp
 E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
 E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
 E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\Properties.xml
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\CommandCards.xml
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.exe
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.pdb
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csprojAssemblyReference.cache
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.baml
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.g.cs
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\App.g.cs
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly_MarkupCompile.cache
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.g.resources
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.Properties.Resources.resources
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.GenerateResource.cache
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CoreCompileInputs.cache
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
+C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
