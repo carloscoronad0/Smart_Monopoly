@@ -59,7 +59,7 @@ namespace Monopoly.RLHandlers
 
         //Action methods
         ActionMethods methods = new ActionMethods();
-        
+
         //Current player and current position value
         public int currentPlayer;
         public int currentPosition;
@@ -239,7 +239,7 @@ namespace Monopoly.RLHandlers
             info += Environment.NewLine + "----------------------------------------" + Environment.NewLine;
             for (int i = 0; i < gameCards.Count; i++)
             {
-                info +=  "owned by " + properties[getIndexFromPosition(i)].ToString() + "  buildings " + buildings[getIndexFromPosition(i)].ToString();
+                info += "owned by " + properties[getIndexFromPosition(i)].ToString() + "  buildings " + buildings[getIndexFromPosition(i)].ToString();
                 info += Environment.NewLine;
             }
 
@@ -569,6 +569,68 @@ namespace Monopoly.RLHandlers
 
         #region InternalMethods
 
+        //Reward propio
+        internal double calculateRewardPropio(int player)
+        {
+
+            double reward = 0;
+            for (int i = 0; i < properties.Length; i++)
+            {
+                if (board.typeId[i].Equals(0))
+                {
+                    if (properties[i].Equals(player))
+                    {
+                        if (gamePlayers[player].mortgagedProperties[getIndexFromPosition(i)].Equals(0))
+                        {
+                            reward++;
+                            if (buildings[i] > 0)
+                                reward += buildings[i];
+                        }
+
+                    }
+                    else if (!properties[i].Equals(-1))
+                    {
+                        reward--;
+                        if (buildings[i] > 0)
+                            reward -= buildings[i];
+                    }
+                }
+            }
+
+            for (int i = 0; i < completedGroups.Length; i++)
+            {
+                if (completedGroups[i].Equals(player))
+                {
+                    reward += (i + 1);
+                }
+                else if (!completedGroups[i].Equals(-1))
+                    reward -= (i + 1);
+            }
+
+            double total = 0;
+            double assetFactor = 0;
+            int alivePlayers = 0;
+            for (int i = 0; i < currentPlayers; i++)
+            {
+                if (gamePlayers[i].isAlive)
+                {
+                    alivePlayers++;
+                    total += gamePlayers[i].money;
+                    if (i.Equals(player))
+                        assetFactor = gamePlayers[i].money;
+                }
+            }
+
+            assetFactor = assetFactor / total;
+
+            reward = smoothFunction(reward, alivePlayers * 5);  //alivePlayers * 5
+
+            reward = reward + (1 / alivePlayers) * assetFactor;
+
+            return reward;
+
+        }
+
         //Calculate Reward
         internal double calculateReward(int player)
         {
@@ -586,7 +648,7 @@ namespace Monopoly.RLHandlers
                             if (buildings[i] > 0)
                                 reward += buildings[i];
                         }
-                           
+
                     }
                     else if (!properties[i].Equals(-1))
                     {
@@ -630,11 +692,11 @@ namespace Monopoly.RLHandlers
             allRewards[player] += Convert.ToInt32(reward);
 
             return reward;
- 
+
         }
 
         //Calculate reward in [-1,1]
-        internal double smoothFunction(double x,double factor)
+        internal double smoothFunction(double x, double factor)
         {
             return (x / factor) / (1 + Math.Abs(x / factor));
         }
@@ -644,7 +706,7 @@ namespace Monopoly.RLHandlers
         {
             return Math.PI * angle / 180.0;
         }
-    
+
         //Shuffle list
         internal static List<CommandCard> shuffle(List<CommandCard> list)
         {
@@ -661,7 +723,7 @@ namespace Monopoly.RLHandlers
 
             return list;
         }
-        
+
         //Load an already created agent
         internal Network loadNeural(string path)
         {
@@ -681,7 +743,7 @@ namespace Monopoly.RLHandlers
             RLAgent agent = (RLAgent)formatter.Deserialize(fs);
             fs.Close();
 
-            return agent; 
+            return agent;
         }
 
         //Get card from position
@@ -693,7 +755,7 @@ namespace Monopoly.RLHandlers
 
         //Get index from position
         internal int getIndexFromPosition(int currentPosition)
-        { 
+        {
             //Count all the number of property cards that are between the start of the board and player's current position
             int counter = 0;
 
@@ -749,7 +811,7 @@ namespace Monopoly.RLHandlers
             if (board.typeId[currentPosition].Equals(0))
             {
                 //If it is then check whehter it is in someone's possession
-                if(!(properties[currentPosition].Equals(-1) || properties[currentPosition].Equals(currentPlayer)))
+                if (!(properties[currentPosition].Equals(-1) || properties[currentPosition].Equals(currentPlayer)))
                 {
                     int owner = properties[currentPosition];
 
@@ -786,7 +848,7 @@ namespace Monopoly.RLHandlers
                         amount = gameCards[getIndexFromPosition(currentPosition)].rent[counter];
                     }
 
-                    if (methods.mActions.payMoney(currentPlayer, owner,(int)amount) < 0)
+                    if (methods.mActions.payMoney(currentPlayer, owner, (int)amount) < 0)
                     {
                         //If the player can't pay then remove him from the game
                         removePlayer(currentPlayer);
@@ -795,7 +857,7 @@ namespace Monopoly.RLHandlers
                         {
                             if (gamePlayers[currentPlayer].propertiesPurchased[i].Equals(1))
                             {
-                                gamePlayers[owner].propertiesPurchased[i] = 1; 
+                                gamePlayers[owner].propertiesPurchased[i] = 1;
                                 properties[gameCards[i].getPosition()] = owner;
                                 if (gamePlayers[currentPlayer].mortgagedProperties[i].Equals(1))
                                     gamePlayers[owner].mortgagedProperties[i] = 1;
@@ -803,7 +865,7 @@ namespace Monopoly.RLHandlers
                             }
                         }
                     }
-                    
+
                 }
             }
         }
@@ -856,7 +918,7 @@ namespace Monopoly.RLHandlers
                 {
                     //Then if he passes through "GO" collect some money
                     //Otherwise do nothing
-                    if(moveTo-currentPosition<=0)
+                    if (moveTo - currentPosition <= 0)
                         gamePlayers[currentPlayer].money += commandCard.moneyTransaction;
                 }
 
@@ -915,28 +977,28 @@ namespace Monopoly.RLHandlers
                 if (commandCard.collect == 0)
                 {
                     //Calculate the total amount that his has to pay
-                   int moneyToPay = commandCard.moneyTransaction + commandCard.houseMultFactor * gamePlayers[currentPlayer].getTotalHouses() + commandCard.hotelMultFactor * gamePlayers[currentPlayer].getTotalHotels();
-                  
+                    int moneyToPay = commandCard.moneyTransaction + commandCard.houseMultFactor * gamePlayers[currentPlayer].getTotalHouses() + commandCard.hotelMultFactor * gamePlayers[currentPlayer].getTotalHotels();
+
                     //Check wheter the player has the money to pay for his fine
-                   //If not then he has to declare bankruptchy and exit the game
-                   if (methods.mActions.payMoney(currentPlayer, -1, moneyToPay) < 0)
-                   {
-                       //Remove him for the game
-                       removePlayer(currentPlayer);
-                       for (int i = 0; i < gameCards.Count; i++)
-                       {
-                           if (gamePlayers[currentPlayer].propertiesPurchased[i].Equals(1))
-                           {
-                               biddingWar(gameCards[i].getPosition());
-                           }
-                       }
-                   }
+                    //If not then he has to declare bankruptchy and exit the game
+                    if (methods.mActions.payMoney(currentPlayer, -1, moneyToPay) < 0)
+                    {
+                        //Remove him for the game
+                        removePlayer(currentPlayer);
+                        for (int i = 0; i < gameCards.Count; i++)
+                        {
+                            if (gamePlayers[currentPlayer].propertiesPurchased[i].Equals(1))
+                            {
+                                biddingWar(gameCards[i].getPosition());
+                            }
+                        }
+                    }
                 }
             }
 
             #endregion Money Transaction
 
-         //   MessageBox.Show(commandCard.text);
+            //   MessageBox.Show(commandCard.text);
         }
 
         //Get money from every player other than the current and add them to his balance
@@ -972,7 +1034,7 @@ namespace Monopoly.RLHandlers
         {
             int moveTo = 0;
             int minDist = 100;
-            
+
             //Find the nearest utility to him and move him there
             string[] tmp = gameCardsGroup[p].Split(',');
             for (int i = 0; i < tmp.Length; i++)
@@ -1129,19 +1191,19 @@ namespace Monopoly.RLHandlers
                 if (completedGroups[i].Equals(id))
                     completedGroups[i] = -1;
             }
-            
+
             //Have to attach player's neural net also
             getOutOfJailTries[id] = 0;
             averageMoney[id] += gamePlayers[id].money;
-        } 
+        }
 
 
         #endregion InternalMethods
 
 
         #region RLMethods
-		
-		
+
+
         #region Environment
 
         //Initialize environment's parameters
@@ -1153,7 +1215,7 @@ namespace Monopoly.RLHandlers
 
             //Create new list of agents
             gamePlayers = new List<Player>();
-            currentPlayers = 3;
+            currentPlayers = 4;
 
             //Average money of every player during the game
             averageMoney = new int[currentPlayers];
@@ -1184,7 +1246,26 @@ namespace Monopoly.RLHandlers
                 {
                     Console.WriteLine("Agent not found");
                     gamePlayers.Add(new RLAgent());
-                    gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23)); //agent type(random-qlearning, policyFrozen, name, input vector length
+
+                    switch (i)//agent type(random-qlearning, policyFrozen, name, input vector length
+                    {
+                        case 0:
+                            gamePlayers[i].agent_init('r', false, "Agent" + i.ToString(), (23)); //0 Random
+                            break;
+                        case 1:
+                            gamePlayers[i].agent_init('q', true, "Agent" + i.ToString(), (23));//1 Fixed policy
+                            break;
+                        case 2:
+                            gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23));// 2 qlearning original
+                            break;
+                        case 3:
+                            gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23));//3 Implementacion propia
+                            break;
+                        default:
+                            Console.WriteLine($"Error creando el agente {i}");
+                            break;
+                    }
+
                     AgentsGamesPlayed.Add(0);
                 }
 
@@ -1359,14 +1440,14 @@ namespace Monopoly.RLHandlers
                 currentPlayer++;
                 currentPlayer = currentPlayer % currentPlayers;
                 playersChecked++;
-            } while (!gamePlayers[currentPlayer].isAlive && playersChecked<=currentPlayers);
+            } while (!gamePlayers[currentPlayer].isAlive && playersChecked <= currentPlayers);
 
             //Increase his move counter since he's been selected
             playerMoves[currentPlayer]++;
-            
-            stepCounter++;         
-        }     
-        
+
+            stepCounter++;
+        }
+
         //Specify whether the game is over
         public bool env_gameIsOver()
         {
@@ -1467,7 +1548,7 @@ namespace Monopoly.RLHandlers
 
             int[] actions = { action, group };
 
-            if (group >= 0) 
+            if (group >= 0)
                 methods.receiveAction(actions);
 
             gamePlayers[currentPlayer].position = currentPosition;
@@ -1554,7 +1635,7 @@ namespace Monopoly.RLHandlers
 
                                     if (Int32.Parse(gameCardsGroup[group].Split(',')[i]).Equals(currentPosition))
                                     {
-                                        if(properties[currentPosition].Equals(currentPlayer)||properties[currentPosition].Equals(-1))
+                                        if (properties[currentPosition].Equals(currentPlayer) || properties[currentPosition].Equals(-1))
                                             ableToAct = true;
                                     }
                                 }
@@ -1578,13 +1659,16 @@ namespace Monopoly.RLHandlers
 
                                     #endregion ChangeCurrentObservation
 
-//                                  for (int actCount = 0; actCount < MAXAGENTACTIONS; actCount++)
-//                                  {
-                                    action = gamePlayers[currentPlayer].agent_step(obs, calculateReward(currentPlayer));
+                                    //                                  for (int actCount = 0; actCount < MAXAGENTACTIONS; actCount++)
+                                    //                                  {
+                                    if (currentPlayer == 3)
+                                        action = gamePlayers[currentPlayer].agent_step(obs, calculateRewardPropio(currentPlayer));
+                                    else
+                                        action = gamePlayers[currentPlayer].agent_step(obs, calculateReward(currentPlayer));
                                     //Console.WriteLine("Player: {0} Action: {1}", currentPlayer, action);
-                              
+
                                     if (currentPlayer.Equals(0))
-                                        Awriter.WriteLine(action.ToString() + " -- " + group.ToString()); 
+                                        Awriter.WriteLine(action.ToString() + " -- " + group.ToString());
 
                                     if (!action.Equals(0))
                                     {
@@ -1592,11 +1676,11 @@ namespace Monopoly.RLHandlers
                                         if (action > 0)
                                             spendList.Add(set);
                                         else
-                                            getList.Add(set);                                 
+                                            getList.Add(set);
                                     }
-//                                  }
+                                    //                                  }
                                 }
-                            } 
+                            }
 
                             for (int i = 0; i < getList.Count; i++)
                             {
@@ -1621,7 +1705,7 @@ namespace Monopoly.RLHandlers
                                 env_selectNextAgent();
                         }
 
-                       //If he is either dead or in jail select next agent
+                        //If he is either dead or in jail select next agent
                         else
                         {
                             env_selectNextAgent();
@@ -1717,8 +1801,11 @@ namespace Monopoly.RLHandlers
                             specObs.area.gameGroupInfo[group, 0] += (gameCardsGroup[group].Split(',').Length / 12) / 17;
 
                             #endregion GameGroupInfo
-
-                            int action = gamePlayers[i].agent_step(specObs, calculateReward(i));
+                            int action;
+                            if (i == 3)
+                                action = gamePlayers[i].agent_step(specObs, calculateRewardPropio(i));
+                            else
+                                action = gamePlayers[i].agent_step(specObs, calculateReward(i));
 
                             if (i.Equals(0))
                                 Awriter.WriteLine("BiddingTime " + action.ToString() + " -- " + group.ToString());
@@ -1795,3 +1882,4 @@ namespace Monopoly.RLHandlers
 
     }
 }
+

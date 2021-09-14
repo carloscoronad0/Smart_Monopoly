@@ -259,3 +259,19 @@ D:\Universidad\6to Semestre\1_Topicos_Selectos_en_Inteligencia_Artificial\2_Prac
 D:\Universidad\6to Semestre\1_Topicos_Selectos_en_Inteligencia_Artificial\2_Practicas\3_Parcial\Proyecto_Final\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
 D:\Universidad\6to Semestre\1_Topicos_Selectos_en_Inteligencia_Artificial\2_Practicas\3_Parcial\Proyecto_Final\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
 D:\Universidad\6to Semestre\1_Topicos_Selectos_en_Inteligencia_Artificial\2_Practicas\3_Parcial\Proyecto_Final\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
+E:\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\Properties.xml
+E:\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\CommandCards.xml
+E:\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.exe
+E:\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.pdb
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csprojAssemblyReference.cache
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.baml
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.g.cs
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\App.g.cs
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly_MarkupCompile.cache
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.g.resources
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.Properties.Resources.resources
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.GenerateResource.cache
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CoreCompileInputs.cache
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
+E:\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
