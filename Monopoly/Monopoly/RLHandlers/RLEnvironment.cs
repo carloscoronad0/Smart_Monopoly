@@ -39,6 +39,9 @@ namespace Monopoly.RLHandlers
         //Average money of every player
         int[] averageMoney;
 
+        //Amount of reward every palyer received
+        int[] allRewards;
+
         //Stopwatch timer to calculate duration of game
         Stopwatch timer;
 
@@ -605,6 +608,8 @@ namespace Monopoly.RLHandlers
 
             reward = reward + (1 / alivePlayers) * assetFactor;
 
+            allRewards[player] += Convert.ToInt32(reward);
+
             return reward;
  
         }
@@ -1134,6 +1139,9 @@ namespace Monopoly.RLHandlers
             //Average money of every player during the game
             averageMoney = new int[currentPlayers];
 
+            //Times a property is bought by each player
+            allRewards = new int[currentPlayers];
+
             // Initialize agents -------------------------------------------------------------------------------------------------
             // -------------------------------------------------------------------------------------------------------------------
 
@@ -1157,6 +1165,7 @@ namespace Monopoly.RLHandlers
                 }
 
                 averageMoney[i] = 0;
+                allRewards[i] = 0;
             }
 
             //Initialize stopwatch
@@ -1249,6 +1258,7 @@ namespace Monopoly.RLHandlers
                     found = true;
                     winners.Add(i);
                     averageMoney[i] += gamePlayers[i].money;
+                    allRewards[i] += WINREWARD;
                     gamePlayers[i].agent_end(WINREWARD);
                     break;
                 }
@@ -1256,6 +1266,26 @@ namespace Monopoly.RLHandlers
 
             if (!found)
                 winners.Add(-1);
+
+            //Print average money of every player
+            TextWriter averageMoneyWriter = new StreamWriter("txt/AverageMoney.txt", true);
+
+            for (int i = 0; i < currentPlayers; i++)
+                averageMoneyWriter.Write((averageMoney[i] / totalGames).ToString()+",");
+
+            averageMoneyWriter.WriteLine();
+            averageMoneyWriter.WriteLine("--------------");
+            averageMoneyWriter.Close();
+
+            //Print rewards of every player
+            TextWriter allRewardsWriter = new StreamWriter("txt/allRewards.txt", true);
+
+            for (int i = 0; i < currentPlayers; i++)
+                allRewardsWriter.Write((allRewards[i]).ToString() + ",");
+
+            allRewardsWriter.WriteLine();
+            allRewardsWriter.WriteLine("--------------");
+            allRewardsWriter.Close();
         }
 
         //Select next agent
@@ -1276,6 +1306,7 @@ namespace Monopoly.RLHandlers
                 {
                     if (gamePlayers[i].isAlive)
                         removePlayer(i);
+                        allRewards[i] += DEFEATREWARD;
                 }
 
                 return;
@@ -1325,14 +1356,6 @@ namespace Monopoly.RLHandlers
         //Clean up memory when the experiment is completed
         public void env_cleanup()
         {
-            //Print average money of every player
-            TextWriter averageMoneyWriter = new StreamWriter("txt/AverageMoney.txt", true);
-
-            for (int i = 0; i < currentPlayers; i++)
-                averageMoneyWriter.WriteLine((averageMoney[i] / totalGames).ToString());
-
-            averageMoneyWriter.Close();
-
             //Dispose agents and save neural networks
             for (int i = 0; i < currentPlayers; i++)
             {
