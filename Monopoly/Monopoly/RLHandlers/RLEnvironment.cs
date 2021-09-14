@@ -1282,7 +1282,7 @@ namespace Monopoly.RLHandlers
             timer = new Stopwatch();
 
             //Set total games
-            totalGames = 5;
+            totalGames = 100;
 
             //Start the games
             for (currentGame = 0; currentGame < totalGames; currentGame++)
