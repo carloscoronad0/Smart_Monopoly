@@ -271,10 +271,10 @@ namespace Monopoly.RLHandlers
 
         private void saveGamesPlayed(List<int> information)
         {
-            for(int i = 0; i < information.Count; i++)
+            for (int i = 0; i < information.Count; i++)
             {
                 TextWriter tw = new StreamWriter("gamesPlayed/Agent" + i + "Games.txt", false);
-                tw.Write(information);
+                tw.Write(information[i]);
                 tw.Close();
             }
         }
@@ -572,60 +572,56 @@ namespace Monopoly.RLHandlers
         //Reward propio
         internal double calculateRewardPropio(int player)
         {
-
             double reward = 0;
+
+            double assetFactor;
+            double playerProperties = 0;
+            double oponentProperties = 0;
+            double playerBuildings = 0;
+            double playerCompletedColors = 0;
+            double numberOfOponents;
+
+            double financeFactor;
+            double oponentsFinance = 0;
+
+            double x;
+
             for (int i = 0; i < properties.Length; i++)
             {
                 if (board.typeId[i].Equals(0))
                 {
-                    if (properties[i].Equals(player))
+                    if (properties[i].Equals(player) && gamePlayers[player].mortgagedProperties[getIndexFromPosition(i)].Equals(0))
                     {
-                        if (gamePlayers[player].mortgagedProperties[getIndexFromPosition(i)].Equals(0))
-                        {
-                            reward++;
-                            if (buildings[i] > 0)
-                                reward += buildings[i];
-                        }
-
+                        playerProperties++;
+                        if (buildings[i] > 0)
+                            playerBuildings += buildings[i];
                     }
                     else if (!properties[i].Equals(-1))
-                    {
-                        reward--;
-                        if (buildings[i] > 0)
-                            reward -= buildings[i];
-                    }
+                        oponentProperties--;
                 }
             }
 
             for (int i = 0; i < completedGroups.Length; i++)
             {
                 if (completedGroups[i].Equals(player))
-                {
-                    reward += (i + 1);
-                }
-                else if (!completedGroups[i].Equals(-1))
-                    reward -= (i + 1);
+                    playerCompletedColors++;
             }
 
-            double total = 0;
-            double assetFactor = 0;
-            int alivePlayers = 0;
-            for (int i = 0; i < currentPlayers; i++)
-            {
-                if (gamePlayers[i].isAlive)
-                {
-                    alivePlayers++;
-                    total += gamePlayers[i].money;
-                    if (i.Equals(player))
-                        assetFactor = gamePlayers[i].money;
-                }
-            }
+            List<Player> alivePlayers = gamePlayers.FindAll(p => p.isAlive == true);
+            numberOfOponents = alivePlayers.Count;
+            foreach (Player p in alivePlayers) oponentsFinance += p.money;
 
-            assetFactor = assetFactor / total;
+            financeFactor = gamePlayers[player].money - (oponentsFinance / numberOfOponents);
 
-            reward = smoothFunction(reward, alivePlayers * 5);  //alivePlayers * 5
+            assetFactor = playerProperties - (oponentProperties / numberOfOponents);
+            if (playerCompletedColors > 0)
+                assetFactor += playerBuildings / (5 * playerCompletedColors);
 
-            reward = reward + (1 / alivePlayers) * assetFactor;
+            x = assetFactor + financeFactor;
+
+            reward = smoothFunction(x, 1);
+
+            allRewards[player] += Convert.ToInt32(reward);
 
             return reward;
 
@@ -1239,7 +1235,6 @@ namespace Monopoly.RLHandlers
                 {
                     Console.WriteLine("Agent found");
                     gamePlayers.Add(loadAgent(path));
-                    Console.WriteLine("Some elements: {0}, {1}", gamePlayers[i].name, gamePlayers[i].money);
                     AgentsGamesPlayed.Add(Int32.Parse(readFromTextFile(agentGamesPlayedPath)));
                 }
                 else // Else create it
@@ -1256,9 +1251,13 @@ namespace Monopoly.RLHandlers
                             gamePlayers[i].agent_init('q', true, "Agent" + i.ToString(), (23));//1 Fixed policy
                             break;
                         case 2:
+                            if (!Directory.Exists("nnAgent2/"))
+                                Directory.CreateDirectory("nnAgent2/");
                             gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23));// 2 qlearning original
                             break;
                         case 3:
+                            if (!Directory.Exists("nnAgent3/"))
+                                Directory.CreateDirectory("nnAgent3/");
                             gamePlayers[i].agent_init('q', false, "Agent" + i.ToString(), (23));//3 Implementacion propia
                             break;
                         default:
@@ -1269,15 +1268,21 @@ namespace Monopoly.RLHandlers
                     AgentsGamesPlayed.Add(0);
                 }
 
+                Console.WriteLine("Total games played by agent: " + AgentsGamesPlayed[i]);
                 averageMoney[i] = 0;
                 allRewards[i] = 0;
             }
+
+            //Check whether the directory exists or not
+            if (!Directory.Exists("txt/")) Directory.CreateDirectory("txt/");
+
+            if (!Directory.Exists("gamesPlayed/")) Directory.CreateDirectory("gamesPlayed/");
 
             //Initialize stopwatch
             timer = new Stopwatch();
 
             //Set total games
-            totalGames = 1;
+            totalGames = 5;
 
             //Start the games
             for (currentGame = 0; currentGame < totalGames; currentGame++)
@@ -1384,7 +1389,7 @@ namespace Monopoly.RLHandlers
             TextWriter averageMoneyWriter = new StreamWriter("txt/AverageMoney.txt", true);
 
             for (int i = 0; i < currentPlayers; i++)
-                averageMoneyWriter.Write((averageMoney[i] / totalGames).ToString()+",");
+                averageMoneyWriter.Write((gamePlayers[i].money).ToString() + ",");
 
             averageMoneyWriter.WriteLine();
             averageMoneyWriter.WriteLine("--------------");
@@ -1849,10 +1854,6 @@ namespace Monopoly.RLHandlers
         //Print experiment's info
         private void printInfo()
         {
-            //Check whether the directory exists or not
-            if (!Directory.Exists("txt/"))
-                Directory.CreateDirectory("txt/");
-
             string output = "";
             string winner = "";
             string move = "";

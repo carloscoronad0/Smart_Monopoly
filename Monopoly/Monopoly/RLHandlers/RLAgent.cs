@@ -139,7 +139,7 @@ namespace Monopoly.RLHandlers
         public override int agent_step(Observation observation, double reward)
         {      
             //If this isn't a random agent calculate the Q values for every possible action
-            int action = 0;
+            int action;
             if (!agentType.Equals('r'))
             {
                 //Calculate Qvalues
@@ -173,6 +173,15 @@ namespace Monopoly.RLHandlers
                     if (!exists)
                         traces.Add(new EligibilityTrace(lastState, new RLClasses.Action(lastAction), 1));
 
+                }
+                else
+                {
+                    if (this.money < 150)
+                        action = -1;
+                    else if (this.money > 350)
+                        action = 1;
+                    else
+                        action = 0;
                 }
 
                 //Update local values
@@ -331,8 +340,6 @@ namespace Monopoly.RLHandlers
             lastState = new Observation();
 
             traces = new List<EligibilityTrace>();
-
-            Console.WriteLine("Prove of everythin ok: {0} : {1} : {2} : {3}", agentType, currentEpoch, epsilon, money);
         }
 
         //Change agent's current observation based on what the agent receives
