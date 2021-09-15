@@ -291,3 +291,19 @@ C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Mono
 C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
 C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
 C:\Users\Alberto\Documents\Topicos selectos AI\finalMonopoly\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\Properties.xml
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Data\CommandCards.xml
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.exe
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\bin\Debug\Monopoly.pdb
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csprojAssemblyReference.cache
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.baml
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\MainWindow.g.cs
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\App.g.cs
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly_MarkupCompile.cache
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.g.resources
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.Properties.Resources.resources
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.GenerateResource.cache
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CoreCompileInputs.cache
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
