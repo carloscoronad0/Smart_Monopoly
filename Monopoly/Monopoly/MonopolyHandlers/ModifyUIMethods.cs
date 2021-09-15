@@ -20,7 +20,7 @@ namespace Monopoly.MonopolyHandlers
         {
             MainWindow mainWindow = (MainWindow)App.Current.MainWindow;
             mainWindow.backgroundTb.Background = ((App)Application.Current).app.getColour(name);
-            mainWindow.cardInfoTb.Text = name + System.Environment.NewLine + info;
+            //mainWindow.cardInfoTb.Text = name + System.Environment.NewLine + info;
             if (!owner.Equals("none")) mainWindow.cardOwnerTb.Text = "Owner : " + owner;
             else mainWindow.cardOwnerTb.Text = "Not purchased yet";
         }
@@ -36,7 +36,7 @@ namespace Monopoly.MonopolyHandlers
 
             info.Remove(info.Length - 1);
             MainWindow mw = (MainWindow)Application.Current.MainWindow;
-            mw.obsInfo.Text = info;
+           // mw.obsInfo.Text = info;
 
          //   MessageBox.Show(info);
           
@@ -54,22 +54,22 @@ namespace Monopoly.MonopolyHandlers
         public void setImages(int id, int position)
         {
              MainWindow mainWindow = (MainWindow)App.Current.MainWindow;
-              foreach (Image image in mainWindow.boardGrid.Children)
+             /* foreach (Image image in mainWindow.boardGrid.Children)
               {
                   if (image.Name.Equals("pos"+position.ToString()))
                       image.Source = new BitmapImage(new Uri("/Images/Players/" + (id+1).ToString() + ".jpg", UriKind.Relative));
-              }
+              }*/
         }
 
         //Reset all images
         public void resetImages()
         {
             MainWindow mainWindow = (MainWindow)App.Current.MainWindow;
-            foreach (Image image in mainWindow.boardGrid.Children)
+           /* foreach (Image image in mainWindow.boardGrid.Children)
             {
                 if (!image.Name.Equals("mainBackground"))
                     image.Source = null;
-            } 
+            }*/ 
         }
 
     }

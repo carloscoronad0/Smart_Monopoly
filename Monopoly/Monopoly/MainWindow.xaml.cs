@@ -40,7 +40,9 @@ namespace Monopoly
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).app.playGame();
+            //((App)Application.Current).app.playGame();
+            Window1 win2 = new Window1();
+            win2.Show();
         }
     }
-}
+}   

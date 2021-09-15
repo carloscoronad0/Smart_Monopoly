@@ -307,3 +307,6 @@ A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\o
 A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.csproj.CopyComplete
 A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.exe
 A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly.pdb
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Window1.g.cs
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Monopoly_MarkupCompile.lref
+A:\PABLO\UPB\OCTAVO SEMESTRE\IA\PROYECTOFINAL\Smart_Monopoly\Monopoly\Monopoly\obj\x86\Debug\Window1.baml

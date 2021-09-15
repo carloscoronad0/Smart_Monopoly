@@ -28,10 +28,10 @@ namespace Monopoly.RLHandlers
         #region Private Fields
 
         //List of winners of every game
-        List<int> winners = new List<int>();
+        public List<int> winners = new List<int>();
 
         //List of the duration of every game
-        List<double> times = new List<double>();
+        public List<double> times = new List<double>();
 
         //List of moves of every game
         List<int> moves = new List<int>();
